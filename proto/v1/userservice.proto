@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package proto.v1;
+
+option go_package = "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1";
+
+
+service UserService {
+    // group 
+    // create
+    rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse){};
+    // list 
+    rpc ListGroup(ListGroupRequest) returns (ListGroupResponse){};
+    // update
+    rpc UpdateGroup(UpdateGroupRequest) returns (UpdateGroupResponse){};
+    // delete
+    rpc DeleteGroup(DeleteGroupRequest) returns (DeleteGroupResponse){};
+
+    //  user 
+    rpc InviteUser(InviteUserRequest) returns (InviteUserResponse){};
+    // list
+    rpc ListUser(ListUserRequest) returns (ListUserResponse){};
+    // update 
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse){};   
+    // reset password
+    rpc RestUserPassword(ResetUserPasswordRequest) returns (ResetUserPasswordResponse){}; 
+    // 
+    rpc UpdateUserPassword(UpdateUserPasswordRequest) returns (UpdateUserPasswordResponse){}; 
+    // delete
+    rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse) {}; 
+}
+
+message Group {
+    string name=1;
+}
+
+enum Role {
+    admin = 0;
+    regular =1;
+}
+
+message User {
+    string username = 1;
+    string email = 2;
+}
+
+enum Status {
+    success = 0;
+    failure = 1;
+}
+
+message CreateGroupRequest { 
+    string groupname=1;
+}
+
+message CreateGroupResponse {
+    string msg=1;
+    Status status = 2;
+    Group group = 3;
+}
+
+message ListGroupRequest {
+    string part=1;
+    int32 offset=2;
+    int32 limit=3;
+}
+
+message ListGroupResponse {
+    string msg=1;
+    Status status = 2;
+    repeated Group groups = 3;
+}
+
+message UpdateGroupRequest {
+    string old_name=1;
+    string new_name=2;
+}
+
+message UpdateGroupResponse {
+    string msg=1;
+    Status status=2;
+}
+
+message DeleteGroupRequest {
+    string name=1;
+}
+
+message DeleteGroupResponse {
+    string msg=1;
+    Status status = 2;   
+}
+
+message InviteUserRequest {
+    User invitee = 1;  
+    repeated Group groups = 2;
+    Role role = 3;
+}
+
+message InviteUserResponse {
+    string msg=1;
+    Status status = 2;
+}
+
+message ListUserRequest {
+    string part=1;
+    int32 offset=2;
+    int32 limit=3;
+}
+
+message ListUserResponse { 
+    string msg=1; 
+    Status status = 2;    
+    repeated User users = 3;
+}
+
+message UpdateUserRequest { 
+    User user = 1;
+    Role role = 2;
+    repeated Group groups = 3;    
+}
+
+message UpdateUserResponse {
+    string msg = 1;
+    Status status = 2;
+}
+
+message ResetUserPasswordRequest {
+    User user =1 ;
+}
+
+message ResetUserPasswordResponse {
+    string msg = 1;
+    Status status = 2;
+}
+
+message UpdateUserPasswordRequest {
+    User user =1 ;
+    string password = 2;
+
+}
+
+message UpdateUserPasswordResponse{
+    string msg = 1;
+    Status status = 2;    
+}
+
+message RemoveUserRequest {
+    string email = 1; 
+}
+
+message RemoveUserResponse {
+    string msg = 1;
+    Status status = 2;
+}
+
