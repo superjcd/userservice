@@ -51,7 +51,7 @@ clean:
 
 
 .PHONY: push
-push: image.build image.push 
+push: image.build image.publish
 
 .PHONY: image.build 
 image.build:

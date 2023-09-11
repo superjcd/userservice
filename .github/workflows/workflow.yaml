@@ -7,7 +7,7 @@ jobs:
     name: Test with go ${{ matrix.go_version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     environment:
-      name: iamci
+      name: userservice
 
     strategy:
       matrix:
