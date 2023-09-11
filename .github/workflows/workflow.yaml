@@ -57,4 +57,4 @@ jobs:
 
       - name: Build docker images for host arch and push images to registry
         run: |
-          make push
+          make publish

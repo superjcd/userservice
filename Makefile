@@ -50,8 +50,8 @@ clean:
 	@echo "====>output directory  is removed sucessfully"
 
 
-.PHONY: push
-push: image.build image.publish
+.PHONY: publish
+push: image.build image.push
 
 .PHONY: image.build 
 image.build:
@@ -59,6 +59,6 @@ image.build:
 	@docker build -t superjcd/${COMMAND} .
 
 
-.PHONY: image.publish
-image.publish:
+.PHONY: image.push
+image.push:
 	@docker push superjcd/${COMMAND}:latest
