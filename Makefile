@@ -16,7 +16,7 @@ all: prepare tidy test build
 
 .PHONY: prepare
 prepare:
-	@mkdir _output
+	-@mkdir _output
 	@echo "====>outpur directory prepared sucessfully"
      
 
