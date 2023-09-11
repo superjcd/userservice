@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/config"
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/service/store"
+	"github.com/HooYa-Bigdata/userservice/config"
+	"github.com/HooYa-Bigdata/userservice/service/store"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

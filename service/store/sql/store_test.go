@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	v1 "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1"
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/service/store"
+	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
+	"github.com/HooYa-Bigdata/userservice/service/store"
 	"github.com/glebarez/sqlite"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -25,7 +25,7 @@ func (suite *FakeStoreTestSuite) SetupSuite() {
 	file, err := os.Create(dbFile)
 	assert.Nil(suite.T(), err)
 	defer file.Close()
-	
+
 	suite.Dbfile = dbFile
 	db, err := gorm.Open(sqlite.Open(dbFile), &gorm.Config{})
 	assert.Nil(suite.T(), err)
@@ -43,6 +43,7 @@ func (suite *FakeStoreTestSuite) TearDownSuite() {
 	assert.Nil(suite.T(), err)
 }
 
+// User
 func (suite *FakeStoreTestSuite) TestInviteUser() {
 	// Create User
 	newUser := &v1.InviteUserRequest{
@@ -89,7 +90,6 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), 1, len(userList.Items))
 	assert.Equal(suite.T(), 0, userList.Items[0].IsAdmin) // 不再是admin了
-
 }
 
 func TestFakeStoreSuite(t *testing.T) {

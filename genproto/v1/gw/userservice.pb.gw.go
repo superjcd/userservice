@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	extV1 "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1"
+	extV1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
 	"google.golang.org/grpc"

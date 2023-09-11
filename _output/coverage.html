@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>sql: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/HooYa-Bigdata/userservice/service/store/sql/groups.go (0.0%)</option>
+				
+				<option value="file1">github.com/HooYa-Bigdata/userservice/service/store/sql/sql.go (37.5%)</option>
+				
+				<option value="file2">github.com/HooYa-Bigdata/userservice/service/store/sql/users.go (60.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package sql
+
+import (
+        "context"
+
+        v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
+        "github.com/HooYa-Bigdata/userservice/service/store"
+        "gorm.io/gorm"
+)
+
+type groups struct {
+        db *gorm.DB
+}
+
+var _ store.GroupStore = (*groups)(nil)
+
+func (u *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error <span class="cov0" title="0">{
+
+        group := store.Group{
+                Name: rq.Groupname,
+        }
+
+        return u.db.Create(&amp;group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
+}</span>
+
+func (u *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) <span class="cov0" title="0">{
+        result := &amp;store.GroupList{}
+
+        d := u.db.Where("name like ?", rq.Part).
+                Offset(int(rq.Offset)).
+                Limit(int(rq.Limit)).
+                Find(&amp;result.Items).
+                Offset(-1).
+                Limit(-1).
+                Count(&amp;result.TotalCount)
+
+        return result, d.Error
+}</span>
+
+func (u *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error <span class="cov0" title="0">{
+        group := &amp;store.Group{}
+        if err := u.db.Where("name = ?", rq.OldName).First(group).Error; err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">group.Name = rq.NewName
+
+        return u.db.Save(&amp;group).Error</span>
+}
+
+func (u *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error <span class="cov0" title="0">{
+        return u.db.Where("name = ?", rq.Name).Delete(&amp;store.Group{}).Error
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package sql
+
+import (
+        "fmt"
+        "sync"
+
+        "github.com/HooYa-Bigdata/userservice/config"
+        "github.com/HooYa-Bigdata/userservice/service/store"
+        "gorm.io/driver/postgres"
+        "gorm.io/gorm"
+)
+
+type datastore struct {
+        db *gorm.DB
+}
+
+func (ds *datastore) Users() store.UserStore <span class="cov8" title="1">{
+        return &amp;users{db: ds.db}
+}</span>
+
+func (ds *datastore) Groups() store.GroupStore <span class="cov0" title="0">{
+        return &amp;groups{db: ds.db}
+}</span>
+
+var (
+        pgFactory  store.Factory
+        sqlFactory store.Factory
+        once       sync.Once
+)
+
+func NewPgStoreFactory(opts *config.Pg) (store.Factory, error) <span class="cov0" title="0">{
+        if opts == nil &amp;&amp; pgFactory == nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to get pg store fatory")
+        }</span>
+
+        <span class="cov0" title="0">var err error
+        var db *gorm.DB
+
+        once.Do(func() </span><span class="cov0" title="0">{
+                dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai",
+                        opts.Host,
+                        opts.Username,
+                        opts.Password,
+                        opts.Database)
+                db, err = gorm.Open(postgres.Open(dsn), &amp;gorm.Config{})
+                store.MigrateDatabase(db)
+                pgFactory = &amp;datastore{db: db}
+        }</span>)
+        <span class="cov0" title="0">if pgFactory == nil || err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov0" title="0">return pgFactory, nil</span>
+}
+
+func NewSqlStoreFactory(db *gorm.DB) (store.Factory, error) <span class="cov8" title="1">{
+        if db == nil &amp;&amp; sqlFactory == nil </span><span class="cov0" title="0">{
+                return nil, fmt.Errorf("failed to get pg store fatory")
+        }</span>
+        <span class="cov8" title="1">once.Do(func() </span><span class="cov8" title="1">{
+                store.MigrateDatabase(db)
+                sqlFactory = &amp;datastore{db: db}
+        }</span>)
+
+        <span class="cov8" title="1">return sqlFactory, nil</span>
+}
+
+func (ds *datastore) Close() error <span class="cov8" title="1">{
+        db, _ := ds.db.DB()
+
+        if err := db.Close(); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package sql
+
+import (
+        "context"
+
+        v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
+        "github.com/HooYa-Bigdata/userservice/pkg/passwd"
+        "github.com/HooYa-Bigdata/userservice/service/store"
+        "gorm.io/gorm"
+)
+
+type users struct {
+        db *gorm.DB
+}
+
+var _ store.UserStore = (*users)(nil)
+
+func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error <span class="cov8" title="1">{
+        isAdmin := 0
+
+        if rq.Role == 0 </span><span class="cov8" title="1">{
+                isAdmin = 1
+        }</span>
+
+        <span class="cov8" title="1">user := store.User{
+                Name:    rq.Invitee.Username,
+                Email:   rq.Invitee.Email,
+                IsAdmin: isAdmin,
+        }
+
+        return u.db.Create(&amp;user).Error</span> // 我只存储了用户， 但没有处理和用户group有关的逻辑
+}
+
+func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserList, error) <span class="cov8" title="1">{
+        result := &amp;store.UserList{}
+
+        d := u.db.Where("name like ?", rq.Part).
+                Offset(int(rq.Offset)).
+                Limit(int(rq.Limit)).
+                Find(&amp;result.Items).
+                Offset(-1).
+                Limit(-1).
+                Count(&amp;result.TotalCount)
+
+        return result, d.Error
+}</span>
+
+func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error <span class="cov8" title="1">{
+        user := &amp;store.User{}
+        if err := u.db.Where("email = ?", rq.User.Email).First(user).Error; err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">user.Name = rq.User.Username
+        isAdmin := 0
+        if rq.Role == 0 </span><span class="cov0" title="0">{
+                isAdmin = 1
+        }</span>
+        <span class="cov8" title="1">user.IsAdmin = isAdmin
+
+        return u.db.Save(&amp;user).Error</span>
+}
+
+func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error <span class="cov0" title="0">{
+        var err error
+        user := &amp;store.User{}
+        if err := u.db.Where("email = ?", rq.User.Email).First(user).Error; err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">if user.Password, err = passwd.Encrypt(rq.Password); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">return u.db.Save(&amp;user).Error</span>
+}
+
+func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error <span class="cov0" title="0">{
+        return u.db.Where("email = ?", rq.Email).Delete(&amp;store.User{}).Error
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

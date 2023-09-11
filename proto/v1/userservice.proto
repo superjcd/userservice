@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package proto.v1;
 
-option go_package = "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1";
 
+option go_package = "github.com/HooYa-Bigdata/userservice/genproto/v1";
 
 service UserService {
     // group 

@@ -3,7 +3,7 @@ package store
 import (
 	"time"
 
-	v1 "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1"
+	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
 	"gorm.io/gorm"
 )
 
@@ -11,7 +11,7 @@ import (
 
 type User struct {
 	gorm.Model
-	Name      string    `json:"name" gorm:"column:name" validate:"required,min=1,max=30"`
+	Name      string    `json:"name" gorm:"column:name" validate:"required,min=2,max=30"`
 	Password  string    `json:"password" gorm:"column:password"`
 	Email     string    `json:"email" gorm:"column:email" validate:"required,email,min=1,max=100"`
 	IsAdmin   int       `json:"isAdmin,omitempty" gorm:"column:isAdmin" validate:"omitempty"`

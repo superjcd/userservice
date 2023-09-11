@@ -3,9 +3,9 @@ package sql
 import (
 	"context"
 
-	v1 "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1"
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/pkg/passwd"
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/service/store"
+	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
+	"github.com/HooYa-Bigdata/userservice/pkg/passwd"
+	"github.com/HooYa-Bigdata/userservice/service/store"
 	"gorm.io/gorm"
 )
 

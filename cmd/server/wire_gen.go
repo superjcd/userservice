@@ -7,9 +7,9 @@
 package server
 
 import (
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/config"
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1"
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/service"
+	"github.com/HooYa-Bigdata/userservice/config"
+	"github.com/HooYa-Bigdata/userservice/genproto/v1"
+	"github.com/HooYa-Bigdata/userservice/service"
 )
 
 // Injectors from wire.go:

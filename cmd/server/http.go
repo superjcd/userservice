@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/HooYa-Bigdata/microservices/grpc_service/userservice/config"
-	v1 "github.com/HooYa-Bigdata/microservices/grpc_service/userservice/genproto/v1/gw"
+	"github.com/HooYa-Bigdata/userservice/config"
+	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1/gw"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
