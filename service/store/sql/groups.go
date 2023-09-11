@@ -14,19 +14,19 @@ type groups struct {
 
 var _ store.GroupStore = (*groups)(nil)
 
-func (u *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error {
+func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error {
 
 	group := store.Group{
 		Name: rq.Groupname,
 	}
 
-	return u.db.Create(&group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
+	return g.db.Create(&group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
 }
 
-func (u *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) {
+func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) {
 	result := &store.GroupList{}
 
-	d := u.db.Where("name like ?", rq.Part).
+	d := g.db.Where("name like ?", rq.Part).
 		Offset(int(rq.Offset)).
 		Limit(int(rq.Limit)).
 		Find(&result.Items).
@@ -37,17 +37,17 @@ func (u *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
 	return result, d.Error
 }
 
-func (u *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error {
+func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error {
 	group := &store.Group{}
-	if err := u.db.Where("name = ?", rq.OldName).First(group).Error; err != nil {
+	if err := g.db.Where("name = ?", rq.OldName).First(group).Error; err != nil {
 		return err
 	}
 
 	group.Name = rq.NewName
 
-	return u.db.Save(&group).Error
+	return g.db.Save(&group).Error
 }
 
-func (u *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error {
-	return u.db.Where("name = ?", rq.Name).Delete(&store.Group{}).Error
+func (g *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error {
+	return g.db.Where("name = ?", rq.Name).Delete(&store.Group{}).Error
 }
