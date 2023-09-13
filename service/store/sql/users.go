@@ -2,6 +2,7 @@ package sql
 
 import (
 	"context"
+	"fmt"
 
 	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
 	"github.com/HooYa-Bigdata/userservice/pkg/passwd"
@@ -34,7 +35,14 @@ func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error {
 func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserList, error) {
 	result := &store.UserList{}
 
-	d := u.db.Where("name like ?", rq.Part).
+	var where_clause string
+	if rq.Part == "" {
+		where_clause = "1 = 1"
+	} else {
+		where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+	}
+
+	d := u.db.Where(where_clause).
 		Offset(int(rq.Offset)).
 		Limit(int(rq.Limit)).
 		Find(&result.Items).
@@ -58,13 +66,13 @@ func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error {
 	}
 	user.IsAdmin = isAdmin
 
-	return u.db.Save(&user).Error
+	return u.db.Save(user).Error
 }
 
 func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error {
 	var err error
-	user := &store.User{}
-	if err := u.db.Where("email = ?", rq.User.Email).First(user).Error; err != nil {
+	user := store.User{}
+	if err := u.db.Where("email = ?", rq.User.Email).First(&user).Error; err != nil {
 		return err
 	}
 	if user.Password, err = passwd.Encrypt(rq.Password); err != nil {

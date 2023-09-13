@@ -2,6 +2,7 @@ package sql
 
 import (
 	"context"
+	"fmt"
 
 	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
 	"github.com/HooYa-Bigdata/userservice/service/store"
@@ -26,7 +27,14 @@ func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error {
 func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) {
 	result := &store.GroupList{}
 
-	d := g.db.Where("name like ?", rq.Part).
+	var where_clause string
+	if rq.Part == "" {
+		where_clause = "1 = 1"
+	} else {
+		where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+	}
+
+	d := g.db.Where(where_clause).
 		Offset(int(rq.Offset)).
 		Limit(int(rq.Limit)).
 		Find(&result.Items).
@@ -38,8 +46,8 @@ func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
 }
 
 func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error {
-	group := &store.Group{}
-	if err := g.db.Where("name = ?", rq.OldName).First(group).Error; err != nil {
+	group := store.Group{}
+	if err := g.db.Where("name = ?", rq.OldName).First(&group).Error; err != nil {
 		return err
 	}
 

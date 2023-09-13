@@ -57,9 +57,9 @@
 				
 				<option value="file0">github.com/HooYa-Bigdata/userservice/service/store/sql/groups.go (0.0%)</option>
 				
-				<option value="file1">github.com/HooYa-Bigdata/userservice/service/store/sql/sql.go (37.5%)</option>
+				<option value="file1">github.com/HooYa-Bigdata/userservice/service/store/sql/sql.go (75.0%)</option>
 				
-				<option value="file2">github.com/HooYa-Bigdata/userservice/service/store/sql/users.go (60.0%)</option>
+				<option value="file2">github.com/HooYa-Bigdata/userservice/service/store/sql/users.go (62.1%)</option>
 				
 				</select>
 			</div>
@@ -77,6 +77,7 @@
 
 import (
         "context"
+        "fmt"
 
         v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
         "github.com/HooYa-Bigdata/userservice/service/store"
@@ -89,19 +90,26 @@ type groups struct {
 
 var _ store.GroupStore = (*groups)(nil)
 
-func (u *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error <span class="cov0" title="0">{
+func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error <span class="cov0" title="0">{
 
         group := store.Group{
                 Name: rq.Groupname,
         }
 
-        return u.db.Create(&amp;group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
+        return g.db.Create(&amp;group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
 }</span>
 
-func (u *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) <span class="cov0" title="0">{
+func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) <span class="cov0" title="0">{
         result := &amp;store.GroupList{}
 
-        d := u.db.Where("name like ?", rq.Part).
+        var where_clause string
+        if rq.Part == "" </span><span class="cov0" title="0">{
+                where_clause = "1 = 1"
+        }</span> else<span class="cov0" title="0"> {
+                where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+        }</span>
+
+        <span class="cov0" title="0">d := g.db.Where(where_clause).
                 Offset(int(rq.Offset)).
                 Limit(int(rq.Limit)).
                 Find(&amp;result.Items).
@@ -109,22 +117,22 @@ func (u *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
                 Limit(-1).
                 Count(&amp;result.TotalCount)
 
-        return result, d.Error
-}</span>
+        return result, d.Error</span>
+}
 
-func (u *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error <span class="cov0" title="0">{
-        group := &amp;store.Group{}
-        if err := u.db.Where("name = ?", rq.OldName).First(group).Error; err != nil </span><span class="cov0" title="0">{
+func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error <span class="cov0" title="0">{
+        group := store.Group{}
+        if err := g.db.Where("name = ?", rq.OldName).First(group).Error; err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
 
         <span class="cov0" title="0">group.Name = rq.NewName
 
-        return u.db.Save(&amp;group).Error</span>
+        return g.db.Save(group).Error</span>
 }
 
-func (u *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error <span class="cov0" title="0">{
-        return u.db.Where("name = ?", rq.Name).Delete(&amp;store.Group{}).Error
+func (g *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error <span class="cov0" title="0">{
+        return g.db.Where("name = ?", rq.Name).Delete(&amp;store.Group{}).Error
 }</span>
 </pre>
 		
@@ -134,9 +142,7 @@ import (
         "fmt"
         "sync"
 
-        "github.com/HooYa-Bigdata/userservice/config"
         "github.com/HooYa-Bigdata/userservice/service/store"
-        "gorm.io/driver/postgres"
         "gorm.io/gorm"
 )
 
@@ -153,34 +159,9 @@ func (ds *datastore) Groups() store.GroupStore <span class="cov0" title="0">{
 }</span>
 
 var (
-        pgFactory  store.Factory
         sqlFactory store.Factory
         once       sync.Once
 )
-
-func NewPgStoreFactory(opts *config.Pg) (store.Factory, error) <span class="cov0" title="0">{
-        if opts == nil &amp;&amp; pgFactory == nil </span><span class="cov0" title="0">{
-                return nil, fmt.Errorf("failed to get pg store fatory")
-        }</span>
-
-        <span class="cov0" title="0">var err error
-        var db *gorm.DB
-
-        once.Do(func() </span><span class="cov0" title="0">{
-                dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai",
-                        opts.Host,
-                        opts.Username,
-                        opts.Password,
-                        opts.Database)
-                db, err = gorm.Open(postgres.Open(dsn), &amp;gorm.Config{})
-                store.MigrateDatabase(db)
-                pgFactory = &amp;datastore{db: db}
-        }</span>)
-        <span class="cov0" title="0">if pgFactory == nil || err != nil </span><span class="cov0" title="0">{
-                return nil, err
-        }</span>
-        <span class="cov0" title="0">return pgFactory, nil</span>
-}
 
 func NewSqlStoreFactory(db *gorm.DB) (store.Factory, error) <span class="cov8" title="1">{
         if db == nil &amp;&amp; sqlFactory == nil </span><span class="cov0" title="0">{
@@ -208,6 +189,7 @@ func (ds *datastore) Close() error <span class="cov8" title="1">{
 
 import (
         "context"
+        "fmt"
 
         v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
         "github.com/HooYa-Bigdata/userservice/pkg/passwd"
@@ -240,7 +222,14 @@ func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error <spa
 func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserList, error) <span class="cov8" title="1">{
         result := &amp;store.UserList{}
 
-        d := u.db.Where("name like ?", rq.Part).
+        var where_clause string
+        if rq.Part == "" </span><span class="cov0" title="0">{
+                where_clause = "1 = 1"
+        }</span> else<span class="cov8" title="1"> {
+                where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+        }</span>
+
+        <span class="cov8" title="1">d := u.db.Where(where_clause).
                 Offset(int(rq.Offset)).
                 Limit(int(rq.Limit)).
                 Find(&amp;result.Items).
@@ -248,8 +237,8 @@ func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserLi
                 Limit(-1).
                 Count(&amp;result.TotalCount)
 
-        return result, d.Error
-}</span>
+        return result, d.Error</span>
+}
 
 func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error <span class="cov8" title="1">{
         user := &amp;store.User{}

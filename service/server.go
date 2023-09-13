@@ -16,13 +16,13 @@ var _DB *gorm.DB
 // Server Server struct
 type Server struct {
 	v1.UnimplementedUserServiceServer
-	datastore  store.Factory
-	userClient v1.UserServiceClient
-	conf       *config.Config
+	datastore store.Factory
+	client    v1.UserServiceClient
+	conf      *config.Config
 }
 
 // NewServer New service grpc server
-func NewServer(conf *config.Config, userClient v1.UserServiceClient) (v1.UserServiceServer, error) {
+func NewServer(conf *config.Config, client v1.UserServiceClient) (v1.UserServiceServer, error) {
 	_DB = database.MustPreParePostgresqlDb(&conf.Pg)
 	factory, err := sql.NewSqlStoreFactory(_DB)
 	if err != nil {
@@ -30,9 +30,9 @@ func NewServer(conf *config.Config, userClient v1.UserServiceClient) (v1.UserSer
 	}
 
 	server := &Server{
-		userClient: userClient,
-		datastore:  factory,
-		conf:       conf,
+		client:    client,
+		datastore: factory,
+		conf:      conf,
 	}
 
 	return server, nil
