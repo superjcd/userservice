@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/HooYa-Bigdata/userservice/config"
+	"github.com/superjcd/userservice/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

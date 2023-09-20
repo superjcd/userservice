@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 
-	"github.com/HooYa-Bigdata/userservice/config"
-	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
-	"github.com/HooYa-Bigdata/userservice/pkg/database"
-	"github.com/HooYa-Bigdata/userservice/service/store"
-	"github.com/HooYa-Bigdata/userservice/service/store/sql"
+	"github.com/superjcd/userservice/config"
+	v1 "github.com/superjcd/userservice/genproto/v1"
+	"github.com/superjcd/userservice/pkg/database"
+	"github.com/superjcd/userservice/service/store"
+	"github.com/superjcd/userservice/service/store/sql"
 	"gorm.io/gorm"
 )
 

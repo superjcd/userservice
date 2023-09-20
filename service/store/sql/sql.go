@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/HooYa-Bigdata/userservice/service/store"
+	"github.com/superjcd/userservice/service/store"
 	"gorm.io/gorm"
 )
 

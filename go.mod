@@ -1,4 +1,4 @@
-module github.com/HooYa-Bigdata/userservice
+module github.com/superjcd/userservice
 
 go 1.20
 

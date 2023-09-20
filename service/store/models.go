@@ -3,7 +3,7 @@ package store
 import (
 	"time"
 
-	v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
+	v1 "github.com/superjcd/userservice/genproto/v1"
 	"gorm.io/gorm"
 )
 
