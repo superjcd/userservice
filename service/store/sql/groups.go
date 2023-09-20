@@ -2,7 +2,6 @@ package sql
 
 import (
 	"context"
-	"fmt"
 
 	v1 "github.com/superjcd/userservice/genproto/v1"
 	"github.com/superjcd/userservice/service/store"
@@ -26,15 +25,13 @@ func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error {
 
 func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) {
 	result := &store.GroupList{}
+	tx := g.db
 
-	var where_clause string
-	if rq.Part == "" {
-		where_clause = "1 = 1"
-	} else {
-		where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+	if rq.Name != "" {
+		tx = tx.Where("name = ?", rq.Name)
 	}
 
-	d := g.db.Where(where_clause).
+	d := tx.
 		Offset(int(rq.Offset)).
 		Limit(int(rq.Limit)).
 		Find(&result.Items).

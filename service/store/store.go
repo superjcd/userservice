@@ -13,7 +13,7 @@ type Factory interface {
 }
 
 type UserStore interface {
-	Create(ctx context.Context, _ *v1.InviteUserRequest) error
+	Create(ctx context.Context, _ *v1.CreateUserRequest) error
 	List(ctx context.Context, _ *v1.ListUserRequest) (*UserList, error)
 	Update(ctx context.Context, _ *v1.UpdateUserRequest) error
 	UpdatePassword(ctx context.Context, _ *v1.UpdateUserPasswordRequest) error

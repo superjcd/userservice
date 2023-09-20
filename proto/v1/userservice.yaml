@@ -12,7 +12,7 @@ http:
     - selector: proto.v1.UserService.DeleteGroup
       delete: /v1/groups
 
-    - selector: proto.v1.UserService.InviteUser
+    - selector: proto.v1.UserService.CreateUser
       post: /v1/users
     - selector: proto.v1.UserService.ListUser
       get: /v1/users

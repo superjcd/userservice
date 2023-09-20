@@ -46,13 +46,12 @@ func (suite *FakeStoreTestSuite) TearDownSuite() {
 // User
 func (suite *FakeStoreTestSuite) TestInviteUser() {
 	// Create User
-	newUser := &v1.InviteUserRequest{
+	newUser := &v1.CreateUserRequest{
 		Invitee: &v1.User{
 			Username: "jcd",
 			Email:    "jcd@example.com",
 		},
-		Groups: []*v1.Group{{Name: "testgroup"}}, // TODO: 这一块其实需要结合RDBC实现
-		Role:   0,
+		Role: 0,
 	}
 	err := suite.FakeFactory.Users().Create(context.Background(), newUser)
 	assert.Nil(suite.T(), err)
@@ -60,9 +59,9 @@ func (suite *FakeStoreTestSuite) TestInviteUser() {
 
 func (suite *FakeStoreTestSuite) TestListUserWithUserName() {
 	request := &v1.ListUserRequest{
-		Part:   "jcd",
-		Offset: 0,
-		Limit:  10,
+		Username: "jcd",
+		Offset:   0,
+		Limit:    10,
 	}
 	userList, err := suite.FakeFactory.Users().List(context.Background(), request)
 	assert.Nil(suite.T(), err)
@@ -82,9 +81,9 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	assert.Nil(suite.T(), err)
 
 	request2 := &v1.ListUserRequest{
-		Part:   "jcd2",
-		Offset: 0,
-		Limit:  10,
+		Username: "jcd2",
+		Offset:   0,
+		Limit:    10,
 	}
 	userList, err := suite.FakeFactory.Users().List(context.Background(), request2)
 	assert.Nil(suite.T(), err)

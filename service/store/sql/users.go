@@ -2,7 +2,6 @@ package sql
 
 import (
 	"context"
-	"fmt"
 
 	v1 "github.com/superjcd/userservice/genproto/v1"
 	"github.com/superjcd/userservice/pkg/passwd"
@@ -16,7 +15,7 @@ type users struct {
 
 var _ store.UserStore = (*users)(nil)
 
-func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error {
+func (u *users) Create(ctx context.Context, rq *v1.CreateUserRequest) error {
 	isAdmin := 0
 
 	if rq.Role == 0 {
@@ -34,15 +33,17 @@ func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error {
 
 func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserList, error) {
 	result := &store.UserList{}
+	tx := u.db
 
-	var where_clause string
-	if rq.Part == "" {
-		where_clause = "1 = 1"
-	} else {
-		where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+	if rq.Username != "" {
+		tx = tx.Where("name = ?", rq.Username)
 	}
 
-	d := u.db.Where(where_clause).
+	if rq.Email != "" {
+		tx = tx.Where("email = ?", rq.Email)
+	}
+
+	d := tx.
 		Offset(int(rq.Offset)).
 		Limit(int(rq.Limit)).
 		Find(&result.Items).

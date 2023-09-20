@@ -23,7 +23,7 @@ const (
 	UserService_ListGroup_FullMethodName          = "/proto.v1.UserService/ListGroup"
 	UserService_UpdateGroup_FullMethodName        = "/proto.v1.UserService/UpdateGroup"
 	UserService_DeleteGroup_FullMethodName        = "/proto.v1.UserService/DeleteGroup"
-	UserService_InviteUser_FullMethodName         = "/proto.v1.UserService/InviteUser"
+	UserService_CreateUser_FullMethodName         = "/proto.v1.UserService/CreateUser"
 	UserService_ListUser_FullMethodName           = "/proto.v1.UserService/ListUser"
 	UserService_UpdateUser_FullMethodName         = "/proto.v1.UserService/UpdateUser"
 	UserService_RestUserPassword_FullMethodName   = "/proto.v1.UserService/RestUserPassword"
@@ -45,7 +45,7 @@ type UserServiceClient interface {
 	// delete
 	DeleteGroup(ctx context.Context, in *DeleteGroupRequest, opts ...grpc.CallOption) (*DeleteGroupResponse, error)
 	//  user
-	InviteUser(ctx context.Context, in *InviteUserRequest, opts ...grpc.CallOption) (*InviteUserResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	// list
 	ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserResponse, error)
 	// update
@@ -102,9 +102,9 @@ func (c *userServiceClient) DeleteGroup(ctx context.Context, in *DeleteGroupRequ
 	return out, nil
 }
 
-func (c *userServiceClient) InviteUser(ctx context.Context, in *InviteUserRequest, opts ...grpc.CallOption) (*InviteUserResponse, error) {
-	out := new(InviteUserResponse)
-	err := c.cc.Invoke(ctx, UserService_InviteUser_FullMethodName, in, out, opts...)
+func (c *userServiceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, UserService_CreateUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +170,7 @@ type UserServiceServer interface {
 	// delete
 	DeleteGroup(context.Context, *DeleteGroupRequest) (*DeleteGroupResponse, error)
 	//  user
-	InviteUser(context.Context, *InviteUserRequest) (*InviteUserResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	// list
 	ListUser(context.Context, *ListUserRequest) (*ListUserResponse, error)
 	// update
@@ -200,8 +200,8 @@ func (UnimplementedUserServiceServer) UpdateGroup(context.Context, *UpdateGroupR
 func (UnimplementedUserServiceServer) DeleteGroup(context.Context, *DeleteGroupRequest) (*DeleteGroupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteGroup not implemented")
 }
-func (UnimplementedUserServiceServer) InviteUser(context.Context, *InviteUserRequest) (*InviteUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method InviteUser not implemented")
+func (UnimplementedUserServiceServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedUserServiceServer) ListUser(context.Context, *ListUserRequest) (*ListUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
@@ -303,20 +303,20 @@ func _UserService_DeleteGroup_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_InviteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InviteUserRequest)
+func _UserService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).InviteUser(ctx, in)
+		return srv.(UserServiceServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserService_InviteUser_FullMethodName,
+		FullMethod: UserService_CreateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).InviteUser(ctx, req.(*InviteUserRequest))
+		return srv.(UserServiceServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -435,8 +435,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_DeleteGroup_Handler,
 		},
 		{
-			MethodName: "InviteUser",
-			Handler:    _UserService_InviteUser_Handler,
+			MethodName: "CreateUser",
+			Handler:    _UserService_CreateUser_Handler,
 		},
 		{
 			MethodName: "ListUser",
