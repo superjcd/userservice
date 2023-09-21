@@ -55,11 +55,11 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/HooYa-Bigdata/userservice/service/store/sql/groups.go (0.0%)</option>
+				<option value="file0">github.com/superjcd/userservice/service/store/sql/groups.go (0.0%)</option>
 				
-				<option value="file1">github.com/HooYa-Bigdata/userservice/service/store/sql/sql.go (75.0%)</option>
+				<option value="file1">github.com/superjcd/userservice/service/store/sql/sql.go (75.0%)</option>
 				
-				<option value="file2">github.com/HooYa-Bigdata/userservice/service/store/sql/users.go (62.1%)</option>
+				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (63.3%)</option>
 				
 				</select>
 			</div>
@@ -77,10 +77,9 @@
 
 import (
         "context"
-        "fmt"
 
-        v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
-        "github.com/HooYa-Bigdata/userservice/service/store"
+        v1 "github.com/superjcd/userservice/genproto/v1"
+        "github.com/superjcd/userservice/service/store"
         "gorm.io/gorm"
 )
 
@@ -101,15 +100,13 @@ func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error <s
 
 func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.GroupList, error) <span class="cov0" title="0">{
         result := &amp;store.GroupList{}
+        tx := g.db
 
-        var where_clause string
-        if rq.Part == "" </span><span class="cov0" title="0">{
-                where_clause = "1 = 1"
-        }</span> else<span class="cov0" title="0"> {
-                where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+        if rq.Name != "" </span><span class="cov0" title="0">{
+                tx = tx.Where("name = ?", rq.Name)
         }</span>
 
-        <span class="cov0" title="0">d := g.db.Where(where_clause).
+        <span class="cov0" title="0">d := tx.
                 Offset(int(rq.Offset)).
                 Limit(int(rq.Limit)).
                 Find(&amp;result.Items).
@@ -122,13 +119,13 @@ func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
 
 func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error <span class="cov0" title="0">{
         group := store.Group{}
-        if err := g.db.Where("name = ?", rq.OldName).First(group).Error; err != nil </span><span class="cov0" title="0">{
+        if err := g.db.Where("name = ?", rq.OldName).First(&amp;group).Error; err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
 
         <span class="cov0" title="0">group.Name = rq.NewName
 
-        return g.db.Save(group).Error</span>
+        return g.db.Save(&amp;group).Error</span>
 }
 
 func (g *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error <span class="cov0" title="0">{
@@ -142,7 +139,7 @@ import (
         "fmt"
         "sync"
 
-        "github.com/HooYa-Bigdata/userservice/service/store"
+        "github.com/superjcd/userservice/service/store"
         "gorm.io/gorm"
 )
 
@@ -189,11 +186,10 @@ func (ds *datastore) Close() error <span class="cov8" title="1">{
 
 import (
         "context"
-        "fmt"
 
-        v1 "github.com/HooYa-Bigdata/userservice/genproto/v1"
-        "github.com/HooYa-Bigdata/userservice/pkg/passwd"
-        "github.com/HooYa-Bigdata/userservice/service/store"
+        v1 "github.com/superjcd/userservice/genproto/v1"
+        "github.com/superjcd/userservice/pkg/passwd"
+        "github.com/superjcd/userservice/service/store"
         "gorm.io/gorm"
 )
 
@@ -203,16 +199,16 @@ type users struct {
 
 var _ store.UserStore = (*users)(nil)
 
-func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error <span class="cov8" title="1">{
+func (u *users) Create(ctx context.Context, rq *v1.CreateUserRequest) error <span class="cov8" title="1">{
         isAdmin := 0
 
-        if rq.Role == 0 </span><span class="cov8" title="1">{
+        if rq.Role == v1.Role_admin </span><span class="cov8" title="1">{
                 isAdmin = 1
         }</span>
 
         <span class="cov8" title="1">user := store.User{
-                Name:    rq.Invitee.Username,
-                Email:   rq.Invitee.Email,
+                Name:    rq.Username,
+                Email:   rq.Email,
                 IsAdmin: isAdmin,
         }
 
@@ -221,15 +217,17 @@ func (u *users) Create(ctx context.Context, rq *v1.InviteUserRequest) error <spa
 
 func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserList, error) <span class="cov8" title="1">{
         result := &amp;store.UserList{}
+        tx := u.db
 
-        var where_clause string
-        if rq.Part == "" </span><span class="cov0" title="0">{
-                where_clause = "1 = 1"
-        }</span> else<span class="cov8" title="1"> {
-                where_clause = fmt.Sprintf("name like '%%%s%%'", rq.Part)
+        if rq.Username != "" </span><span class="cov8" title="1">{
+                tx = tx.Where("name = ?", rq.Username)
         }</span>
 
-        <span class="cov8" title="1">d := u.db.Where(where_clause).
+        <span class="cov8" title="1">if rq.Email != "" </span><span class="cov0" title="0">{
+                tx = tx.Where("email = ?", rq.Email)
+        }</span>
+
+        <span class="cov8" title="1">d := tx.
                 Offset(int(rq.Offset)).
                 Limit(int(rq.Limit)).
                 Find(&amp;result.Items).
@@ -253,13 +251,13 @@ func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error <spa
         }</span>
         <span class="cov8" title="1">user.IsAdmin = isAdmin
 
-        return u.db.Save(&amp;user).Error</span>
+        return u.db.Save(user).Error</span>
 }
 
 func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error <span class="cov0" title="0">{
         var err error
-        user := &amp;store.User{}
-        if err := u.db.Where("email = ?", rq.User.Email).First(user).Error; err != nil </span><span class="cov0" title="0">{
+        user := store.User{}
+        if err := u.db.Where("email = ?", rq.User.Email).First(&amp;user).Error; err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
         <span class="cov0" title="0">if user.Password, err = passwd.Encrypt(rq.Password); err != nil </span><span class="cov0" title="0">{

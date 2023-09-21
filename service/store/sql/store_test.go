@@ -47,11 +47,9 @@ func (suite *FakeStoreTestSuite) TearDownSuite() {
 func (suite *FakeStoreTestSuite) TestInviteUser() {
 	// Create User
 	newUser := &v1.CreateUserRequest{
-		Invitee: &v1.User{
-			Username: "jcd",
-			Email:    "jcd@example.com",
-		},
-		Role: 0,
+		Username: "jcd",
+		Email:    "jcd@example.com",
+		Role:     0,
 	}
 	err := suite.FakeFactory.Users().Create(context.Background(), newUser)
 	assert.Nil(suite.T(), err)

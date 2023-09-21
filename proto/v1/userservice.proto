@@ -91,8 +91,9 @@ message DeleteGroupResponse {
 }
 
 message CreateUserRequest {
-    User invitee = 1;  
-    Role role = 2;
+    string username=1;
+    string email=2;
+    Role role = 3;
 }
 
 message CreateUserResponse {

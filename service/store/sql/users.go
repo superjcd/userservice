@@ -18,13 +18,13 @@ var _ store.UserStore = (*users)(nil)
 func (u *users) Create(ctx context.Context, rq *v1.CreateUserRequest) error {
 	isAdmin := 0
 
-	if rq.Role == 0 {
+	if rq.Role == v1.Role_admin {
 		isAdmin = 1
 	}
 
 	user := store.User{
-		Name:    rq.Invitee.Username,
-		Email:   rq.Invitee.Email,
+		Name:    rq.Username,
+		Email:   rq.Email,
 		IsAdmin: isAdmin,
 	}
 
