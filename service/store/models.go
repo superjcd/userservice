@@ -13,7 +13,7 @@ type User struct {
 	gorm.Model
 	Name      string    `json:"name" gorm:"column:name" validate:"required,min=2,max=30"`
 	Password  string    `json:"password" gorm:"column:password"`
-	Email     string    `json:"email" gorm:"column:email;uniqueIndex" validate:"required,email,min=1,max=100"`
+	Email     string    `json:"email" gorm:"column:email;uniqueIndex;size:30" validate:"required,email,min=1,max=30"`
 	IsAdmin   int       `json:"isAdmin,omitempty" gorm:"column:isAdmin" validate:"omitempty"`
 	LoginedAt time.Time `json:"loginedAt,omitempty" gorm:"column:loginedAt"`
 }
@@ -32,7 +32,7 @@ func (ul *UserList) ConvertToListUserResponse(msg string, status v1.Status) v1.L
 			Email:    user.Email,
 		})
 	}
-
+BLOB/TEXT column 'email' used in key specification without a key length
 	return v1.ListUserResponse{
 		Msg:    msg,
 		Status: status,
