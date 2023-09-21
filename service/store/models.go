@@ -13,7 +13,7 @@ type User struct {
 	gorm.Model
 	Name      string    `json:"name" gorm:"column:name" validate:"required,min=2,max=30"`
 	Password  string    `json:"password" gorm:"column:password"`
-	Email     string    `json:"email" gorm:"column:email" validate:"required,email,min=1,max=100"`
+	Email     string    `json:"email" gorm:"column:email;uniqueIndex" validate:"required,email,min=1,max=100"`
 	IsAdmin   int       `json:"isAdmin,omitempty" gorm:"column:isAdmin" validate:"omitempty"`
 	LoginedAt time.Time `json:"loginedAt,omitempty" gorm:"column:loginedAt"`
 }
