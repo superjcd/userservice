@@ -32,7 +32,7 @@ func (ul *UserList) ConvertToListUserResponse(msg string, status v1.Status) v1.L
 			Email:    user.Email,
 		})
 	}
-BLOB/TEXT column 'email' used in key specification without a key length
+
 	return v1.ListUserResponse{
 		Msg:    msg,
 		Status: status,
