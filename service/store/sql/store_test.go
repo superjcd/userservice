@@ -89,6 +89,25 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	assert.Equal(suite.T(), 0, userList.Items[0].IsAdmin) // 不再是admin了
 }
 
+func (suite *FakeStoreTestSuite) TestZDeleteUser() {
+	rq := &v1.RemoveUserRequest{
+		Email: "jcd@example.com",
+	}
+
+	err := suite.FakeFactory.Users().Delete(context.Background(), rq)
+	assert.Nil(suite.T(), err)
+
+	request2 := &v1.ListUserRequest{
+		Email:  "jcd@example.com",
+		Offset: 0,
+		Limit:  10,
+	}
+	userList, err := suite.FakeFactory.Users().List(context.Background(), request2)
+	assert.Nil(suite.T(), err)
+	assert.Equal(suite.T(), 0, len(userList.Items))
+
+}
+
 func TestFakeStoreSuite(t *testing.T) {
 	suite.Run(t, new(FakeStoreTestSuite))
 }

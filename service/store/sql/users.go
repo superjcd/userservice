@@ -83,5 +83,5 @@ func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordReq
 }
 
 func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error {
-	return u.db.Where("email = ?", rq.Email).Delete(&store.User{}).Error
+	return u.db.Unscoped().Where("email = ?", rq.Email).Delete(&store.User{}).Error
 }

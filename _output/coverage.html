@@ -59,7 +59,7 @@
 				
 				<option value="file1">github.com/superjcd/userservice/service/store/sql/sql.go (75.0%)</option>
 				
-				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (63.3%)</option>
+				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (70.0%)</option>
 				
 				</select>
 			</div>
@@ -223,7 +223,7 @@ func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserLi
                 tx = tx.Where("name = ?", rq.Username)
         }</span>
 
-        <span class="cov8" title="1">if rq.Email != "" </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if rq.Email != "" </span><span class="cov8" title="1">{
                 tx = tx.Where("email = ?", rq.Email)
         }</span>
 
@@ -266,8 +266,8 @@ func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordReq
         <span class="cov0" title="0">return u.db.Save(&amp;user).Error</span>
 }
 
-func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error <span class="cov0" title="0">{
-        return u.db.Where("email = ?", rq.Email).Delete(&amp;store.User{}).Error
+func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error <span class="cov8" title="1">{
+        return u.db.Unscoped().Where("email = ?", rq.Email).Delete(&amp;store.User{}).Error
 }</span>
 </pre>
 		
