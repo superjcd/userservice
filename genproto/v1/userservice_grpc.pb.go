@@ -19,16 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserService_CreateGroup_FullMethodName        = "/proto.v1.UserService/CreateGroup"
-	UserService_ListGroup_FullMethodName          = "/proto.v1.UserService/ListGroup"
-	UserService_UpdateGroup_FullMethodName        = "/proto.v1.UserService/UpdateGroup"
-	UserService_DeleteGroup_FullMethodName        = "/proto.v1.UserService/DeleteGroup"
-	UserService_CreateUser_FullMethodName         = "/proto.v1.UserService/CreateUser"
-	UserService_ListUser_FullMethodName           = "/proto.v1.UserService/ListUser"
-	UserService_UpdateUser_FullMethodName         = "/proto.v1.UserService/UpdateUser"
-	UserService_RestUserPassword_FullMethodName   = "/proto.v1.UserService/RestUserPassword"
-	UserService_UpdateUserPassword_FullMethodName = "/proto.v1.UserService/UpdateUserPassword"
-	UserService_RemoveUser_FullMethodName         = "/proto.v1.UserService/RemoveUser"
+	UserService_CreateGroup_FullMethodName        = "/superjcd.userservice.v1.UserService/CreateGroup"
+	UserService_ListGroup_FullMethodName          = "/superjcd.userservice.v1.UserService/ListGroup"
+	UserService_UpdateGroup_FullMethodName        = "/superjcd.userservice.v1.UserService/UpdateGroup"
+	UserService_DeleteGroup_FullMethodName        = "/superjcd.userservice.v1.UserService/DeleteGroup"
+	UserService_CreateUser_FullMethodName         = "/superjcd.userservice.v1.UserService/CreateUser"
+	UserService_ListUser_FullMethodName           = "/superjcd.userservice.v1.UserService/ListUser"
+	UserService_UpdateUser_FullMethodName         = "/superjcd.userservice.v1.UserService/UpdateUser"
+	UserService_RestUserPassword_FullMethodName   = "/superjcd.userservice.v1.UserService/RestUserPassword"
+	UserService_UpdateUserPassword_FullMethodName = "/superjcd.userservice.v1.UserService/UpdateUserPassword"
+	UserService_RemoveUser_FullMethodName         = "/superjcd.userservice.v1.UserService/RemoveUser"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -415,7 +415,7 @@ func _UserService_RemoveUser_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.v1.UserService",
+	ServiceName: "superjcd.userservice.v1.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -406,7 +406,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/CreateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/CreateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -431,7 +431,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/ListGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/ListGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -456,7 +456,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/UpdateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/UpdateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -481,7 +481,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/DeleteGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/DeleteGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -506,7 +506,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/CreateUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/CreateUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -531,7 +531,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/ListUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/ListUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -556,7 +556,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/UpdateUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/UpdateUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -581,7 +581,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/RestUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/RestUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -606,7 +606,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/UpdateUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/UpdateUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -631,7 +631,7 @@ func RegisterUserServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.v1.UserService/RemoveUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/RemoveUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -695,7 +695,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/CreateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/CreateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -717,7 +717,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/ListGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/ListGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -739,7 +739,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/UpdateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/UpdateGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -761,7 +761,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/DeleteGroup", runtime.WithHTTPPathPattern("/v1/groups"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/DeleteGroup", runtime.WithHTTPPathPattern("/v1/groups"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -783,7 +783,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/CreateUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/CreateUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -805,7 +805,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/ListUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/ListUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -827,7 +827,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/UpdateUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/UpdateUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -849,7 +849,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/RestUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/RestUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -871,7 +871,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/UpdateUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/UpdateUserPassword", runtime.WithHTTPPathPattern("/v1/users/password"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -893,7 +893,7 @@ func RegisterUserServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/proto.v1.UserService/RemoveUser", runtime.WithHTTPPathPattern("/v1/users"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/superjcd.userservice.v1.UserService/RemoveUser", runtime.WithHTTPPathPattern("/v1/users"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
