@@ -47,9 +47,10 @@ func (suite *FakeStoreTestSuite) TearDownSuite() {
 func (suite *FakeStoreTestSuite) TestInviteUser() {
 	// Create User
 	newUser := &v1.CreateUserRequest{
-		Username: "jcd",
-		Email:    "jcd@example.com",
-		Role:     0,
+		Username: "jack",
+		Email:    "jack@example.com",
+		Role:     2,
+		Creator:  "chaodi.jiang@fdsintl.com",
 	}
 	err := suite.FakeFactory.Users().Create(context.Background(), newUser)
 	assert.Nil(suite.T(), err)
@@ -57,9 +58,10 @@ func (suite *FakeStoreTestSuite) TestInviteUser() {
 
 func (suite *FakeStoreTestSuite) TestListUserWithUserName() {
 	request := &v1.ListUserRequest{
-		Username: "jcd",
+		Username: "jack",
 		Offset:   0,
 		Limit:    10,
+		Creator:  "chaodi.jiang@fdsintl.com",
 	}
 	userList, err := suite.FakeFactory.Users().List(context.Background(), request)
 	assert.Nil(suite.T(), err)
@@ -69,8 +71,8 @@ func (suite *FakeStoreTestSuite) TestListUserWithUserName() {
 func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	request := &v1.UpdateUserRequest{
 		User: &v1.User{
-			Username: "jcd2",
-			Email:    "jcd@example.com",
+			Username: "jack2",
+			Email:    "jack@example.com",
 		},
 		Role: 1,
 	}
@@ -79,7 +81,7 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	assert.Nil(suite.T(), err)
 
 	request2 := &v1.ListUserRequest{
-		Username: "jcd2",
+		Username: "jack2",
 		Offset:   0,
 		Limit:    10,
 	}
@@ -91,14 +93,14 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 
 func (suite *FakeStoreTestSuite) TestZDeleteUser() {
 	rq := &v1.RemoveUserRequest{
-		Email: "jcd@example.com",
+		Email: "jack@example.com",
 	}
 
 	err := suite.FakeFactory.Users().Delete(context.Background(), rq)
 	assert.Nil(suite.T(), err)
 
 	request2 := &v1.ListUserRequest{
-		Email:  "jcd@example.com",
+		Email:  "jack@example.com",
 		Offset: 0,
 		Limit:  10,
 	}

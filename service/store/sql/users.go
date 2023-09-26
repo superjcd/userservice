@@ -18,14 +18,16 @@ var _ store.UserStore = (*users)(nil)
 func (u *users) Create(ctx context.Context, rq *v1.CreateUserRequest) error {
 	isAdmin := 0
 
-	if rq.Role == v1.Role_admin {
+	if rq.Role >= v1.Role_admin {
 		isAdmin = 1
 	}
 
 	user := store.User{
-		Name:    rq.Username,
-		Email:   rq.Email,
-		IsAdmin: isAdmin,
+		Name:      rq.Username,
+		Email:     rq.Email,
+		IsAdmin:   isAdmin,
+		Creator:   rq.Creator,
+		RoleLevel: int(rq.Role),
 	}
 
 	return u.db.Create(&user).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
@@ -41,6 +43,10 @@ func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserLi
 
 	if rq.Email != "" {
 		tx = tx.Where("email = ?", rq.Email)
+	}
+
+	if rq.Creator != "" {
+		tx = tx.Where("creator = ?", rq.Creator)
 	}
 
 	d := tx.
@@ -81,6 +87,7 @@ func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordReq
 	}
 	return u.db.Save(&user).Error
 }
+
 
 func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error {
 	return u.db.Unscoped().Where("email = ?", rq.Email).Delete(&store.User{}).Error

@@ -17,7 +17,8 @@ var _ store.GroupStore = (*groups)(nil)
 func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error {
 
 	group := store.Group{
-		Name: rq.Groupname,
+		Name:    rq.Groupname,
+		Creator: rq.Creator,
 	}
 
 	return g.db.Create(&group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
@@ -29,6 +30,9 @@ func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
 
 	if rq.Name != "" {
 		tx = tx.Where("name = ?", rq.Name)
+	}
+	if rq.Creator != "" {
+		tx = tx.Where("creator = ?", rq.Creator)
 	}
 
 	d := tx.

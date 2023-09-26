@@ -11,11 +11,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Name      string    `json:"name" gorm:"column:name" validate:"required,min=2,max=30"`
+	Name      string    `json:"name" gorm:"column:name"`
 	Password  string    `json:"password" gorm:"column:password"`
-	Email     string    `json:"email" gorm:"column:email;uniqueIndex;size:30" validate:"required,email,min=1,max=30"`
-	IsAdmin   int       `json:"isAdmin,omitempty" gorm:"column:isAdmin" validate:"omitempty"`
-	LoginedAt time.Time `json:"loginedAt,omitempty" gorm:"column:loginedAt"`
+	Email     string    `json:"email" gorm:"column:email;uniqueIndex;size:30" `
+	IsAdmin   int       `json:"is_admin,omitempty" gorm:"column:is_admin"`
+	RoleLevel int       `json:"role_level,omitempty" gorm:"column:role_level"`
+	Creator   string    `json:"creator" gorm:"column:creator"` // 这个会是email
+	LogindAt  time.Time `json:"logine_at,omitempty" gorm:"column:logine_at"`
 }
 
 type UserList struct {
@@ -30,6 +32,7 @@ func (ul *UserList) ConvertToListUserResponse(msg string, status v1.Status) v1.L
 		users = append(users, &v1.User{
 			Username: user.Name,
 			Email:    user.Email,
+			Creator:  user.Creator,
 		})
 	}
 
@@ -42,7 +45,8 @@ func (ul *UserList) ConvertToListUserResponse(msg string, status v1.Status) v1.L
 
 type Group struct {
 	gorm.Model
-	Name string `json:"name" gorm:"column:name;uniqueIndex;size:30" validate:"required,min=1,max=30"`
+	Name    string `json:"name" gorm:"column:name;uniqueIndex;size:30" validate:"required,min=1,max=30"`
+	Creator string `json:"creator" gorm:"column:creator"`
 }
 
 type GroupList struct {
@@ -55,7 +59,8 @@ func (gl *GroupList) ConvertToListGroupResponse(msg string, status v1.Status) v1
 
 	for _, group := range gl.Items {
 		groups = append(groups, &v1.Group{
-			Name: group.Name,
+			Name:    group.Name,
+			Creator: group.Creator,
 		})
 	}
 
@@ -68,10 +73,7 @@ func (gl *GroupList) ConvertToListGroupResponse(msg string, status v1.Status) v1
 }
 
 func MigrateDatabase(db *gorm.DB) error {
-	if err := db.AutoMigrate(User{}); err != nil {
-		return err
-	}
-	if err := db.AutoMigrate(Group{}); err != nil {
+	if err := db.AutoMigrate(User{}, Group{}); err != nil {
 		return err
 	}
 	return nil
