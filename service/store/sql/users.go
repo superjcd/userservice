@@ -68,10 +68,16 @@ func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error {
 
 	user.Name = rq.User.Username
 	isAdmin := 0
-	if rq.Role == 0 {
+
+	if rq.Role >= 1 {
 		isAdmin = 1
 	}
+
+	user.RoleLevel = int(rq.Role)
 	user.IsAdmin = isAdmin
+	if rq.Creator != "" {
+		user.Creator = rq.Creator
+	}
 
 	return u.db.Save(user).Error
 }
@@ -87,7 +93,6 @@ func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordReq
 	}
 	return u.db.Save(&user).Error
 }
-
 
 func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error {
 	return u.db.Unscoped().Where("email = ?", rq.Email).Delete(&store.User{}).Error

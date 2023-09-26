@@ -79,6 +79,7 @@ message ListGroupResponse {
 message UpdateGroupRequest {
     string old_name=1;
     string new_name=2;
+    string creator=3;  // 这个主要是在删除一个admin user的时候， 先要把某个creator的组更新为另外一个人
 }
 
 message UpdateGroupResponse {
@@ -125,6 +126,7 @@ message ListUserResponse {
 message UpdateUserRequest { 
     User user = 1;
     Role role = 2;
+    string creator =3;
 }
 
 message UpdateUserResponse {

@@ -52,7 +52,13 @@ func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error {
 		return err
 	}
 
-	group.Name = rq.NewName
+	if rq.NewName != "" {
+		group.Name = rq.NewName
+	}
+
+	if rq.Creator != "" {
+		group.Creator = rq.Creator
+	}
 
 	return g.db.Save(&group).Error
 }

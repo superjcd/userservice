@@ -49,7 +49,7 @@ func (suite *FakeStoreTestSuite) TestInviteUser() {
 	newUser := &v1.CreateUserRequest{
 		Username: "jack",
 		Email:    "jack@example.com",
-		Role:     2,
+		Role:     0,
 		Creator:  "chaodi.jiang@fdsintl.com",
 	}
 	err := suite.FakeFactory.Users().Create(context.Background(), newUser)
@@ -74,7 +74,7 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 			Username: "jack2",
 			Email:    "jack@example.com",
 		},
-		Role: 1,
+		Role: v1.Role_superadmin,
 	}
 
 	err := suite.FakeFactory.Users().Update(context.Background(), request)
@@ -88,7 +88,7 @@ func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	userList, err := suite.FakeFactory.Users().List(context.Background(), request2)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), 1, len(userList.Items))
-	assert.Equal(suite.T(), 0, userList.Items[0].IsAdmin) // 不再是admin了
+	assert.Equal(suite.T(), 1, userList.Items[0].IsAdmin) // 是superaadmin
 }
 
 func (suite *FakeStoreTestSuite) TestZDeleteUser() {
