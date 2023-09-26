@@ -31,7 +31,8 @@ service UserService {
 
 message Group {
     string name=1;
-    string creator=2;
+    string type=2;
+    string creator=3;
 }
 
 enum Role {
@@ -52,8 +53,9 @@ enum Status {
 }
 
 message CreateGroupRequest { 
-    string groupname = 1;
-    string creator = 2;
+    string name = 1;
+    string type = 2;
+    string creator = 3;
 }
 
 message CreateGroupResponse {
@@ -65,8 +67,9 @@ message CreateGroupResponse {
 message ListGroupRequest {
     string name=1;
     string creator=2;
-    int32 offset=3;
-    int32 limit=4;
+    string type = 3;
+    int32 offset=4;
+    int32 limit=5;
 
 }
 
@@ -79,7 +82,7 @@ message ListGroupResponse {
 message UpdateGroupRequest {
     string old_name=1;
     string new_name=2;
-    string creator=3;  // 这个主要是在删除一个admin user的时候， 先要把某个creator的组更新为另外一个人
+    string creator=3;  
 }
 
 message UpdateGroupResponse {

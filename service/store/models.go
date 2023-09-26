@@ -45,7 +45,8 @@ func (ul *UserList) ConvertToListUserResponse(msg string, status v1.Status) v1.L
 
 type Group struct {
 	gorm.Model
-	Name    string `json:"name" gorm:"column:name;uniqueIndex;size:30" validate:"required,min=1,max=30"`
+	Name    string `json:"name" gorm:"column:name;uniqueIndex;size:30"`
+	Type    string `json:"type" gorm:"column:type"`
 	Creator string `json:"creator" gorm:"column:creator"`
 }
 
@@ -61,6 +62,7 @@ func (gl *GroupList) ConvertToListGroupResponse(msg string, status v1.Status) v1
 		groups = append(groups, &v1.Group{
 			Name:    group.Name,
 			Creator: group.Creator,
+			Type:    group.Type,
 		})
 	}
 

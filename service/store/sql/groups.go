@@ -17,7 +17,8 @@ var _ store.GroupStore = (*groups)(nil)
 func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error {
 
 	group := store.Group{
-		Name:    rq.Groupname,
+		Name:    rq.Name,
+		Type:    rq.Type,
 		Creator: rq.Creator,
 	}
 
@@ -30,6 +31,9 @@ func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
 
 	if rq.Name != "" {
 		tx = tx.Where("name = ?", rq.Name)
+	}
+	if rq.Type != "" {
+		tx = tx.Where("type = ?", rq.Type)
 	}
 	if rq.Creator != "" {
 		tx = tx.Where("creator = ?", rq.Creator)

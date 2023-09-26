@@ -45,7 +45,7 @@ func (s *Server) CreateGroup(ctx context.Context, rq *v1.CreateGroupRequest) (*v
 	return &v1.CreateGroupResponse{
 		Msg:    "创建成功",
 		Status: v1.Status_success,
-		Group:  &v1.Group{Name: rq.Groupname},
+		Group:  &v1.Group{Name: rq.Name, Type: rq.Type, Creator: rq.Creator},
 	}, nil
 }
 
@@ -130,8 +130,6 @@ func (s *Server) UpdateUserPassword(ctx context.Context, rq *v1.UpdateUserPasswo
 }
 
 func (s *Server) ResetUserPassword(ctx context.Context, rq *v1.ResetUserPasswordRequest) (*v1.ResetUserPasswordResponse, error) {
-	// newCtx, cancel := context.WithCancel(ctx)
-	// notification
 	return &v1.ResetUserPasswordResponse{Msg: "更新用户成功", Status: v1.Status_success}, nil
 
 }
