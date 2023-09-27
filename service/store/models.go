@@ -16,7 +16,7 @@ type User struct {
 	Email     string    `json:"email" gorm:"column:email;uniqueIndex;size:30" `
 	IsAdmin   int       `json:"is_admin,omitempty" gorm:"column:is_admin"`
 	RoleLevel int       `json:"role_level,omitempty" gorm:"column:role_level"`
-	Creator   string    `json:"creator" gorm:"column:creator"` // 这个会是email
+	Creator   string    `json:"creator" gorm:"column:creator"`
 	LogindAt  time.Time `json:"logine_at,omitempty" gorm:"column:logine_at"`
 }
 
