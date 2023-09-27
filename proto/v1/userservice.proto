@@ -92,6 +92,7 @@ message UpdateGroupResponse {
 
 message DeleteGroupRequest {
     string name=1;
+    string type=2;
 }
 
 message DeleteGroupResponse {
