@@ -68,5 +68,5 @@ func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error {
 }
 
 func (g *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error {
-	return g.db.Where("name = ?", rq.Name).Delete(&store.Group{}).Error
+	return g.db.Unscoped().Where("name = ? AND type = ?", rq.Name, rq.Type).Delete(&store.Group{}).Error
 }

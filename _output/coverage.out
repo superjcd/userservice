@@ -1,5 +1,5 @@
 mode: set
-github.com/superjcd/userservice/service/store/sql/groups.go:17.79,26.2 2 0
+github.com/superjcd/userservice/service/store/sql/groups.go:17.79,26.2 2 1
 github.com/superjcd/userservice/service/store/sql/groups.go:28.95,32.19 3 0
 github.com/superjcd/userservice/service/store/sql/groups.go:32.19,34.3 1 0
 github.com/superjcd/userservice/service/store/sql/groups.go:35.2,35.19 1 0
@@ -14,9 +14,9 @@ github.com/superjcd/userservice/service/store/sql/groups.go:59.22,61.3 1 0
 github.com/superjcd/userservice/service/store/sql/groups.go:63.2,63.22 1 0
 github.com/superjcd/userservice/service/store/sql/groups.go:63.22,65.3 1 0
 github.com/superjcd/userservice/service/store/sql/groups.go:67.2,67.32 1 0
-github.com/superjcd/userservice/service/store/sql/groups.go:70.79,72.2 1 0
+github.com/superjcd/userservice/service/store/sql/groups.go:70.79,72.2 1 1
 github.com/superjcd/userservice/service/store/sql/sql.go:15.46,17.2 1 1
-github.com/superjcd/userservice/service/store/sql/sql.go:19.48,21.2 1 0
+github.com/superjcd/userservice/service/store/sql/sql.go:19.48,21.2 1 1
 github.com/superjcd/userservice/service/store/sql/sql.go:28.61,29.36 1 1
 github.com/superjcd/userservice/service/store/sql/sql.go:29.36,31.3 1 0
 github.com/superjcd/userservice/service/store/sql/sql.go:32.2,32.17 1 1

@@ -108,6 +108,33 @@ func (suite *FakeStoreTestSuite) TestZDeleteUser() {
 
 }
 
+func (suite *FakeStoreTestSuite) TestCreateGroup() {
+	rq := &v1.CreateGroupRequest{
+		Name: "testgroup",
+		Type: "user",
+	}
+
+	err := suite.FakeFactory.Groups().Create(context.Background(), rq)
+	assert.Nil(suite.T(), err)
+}
+
+func (suite *FakeStoreTestSuite) TestDeleteGroup() {
+	rq := &v1.DeleteGroupRequest{
+		Name: "testgroup",
+		Type: "user",
+	}
+
+	err := suite.FakeFactory.Groups().Delete(context.Background(), rq)
+	assert.Nil(suite.T(), err)
+
+	rq2 := &v1.DeleteGroupRequest{
+		Name: "testgroup2", // not existed
+		Type: "user",
+	}
+	err2 := suite.FakeFactory.Groups().Delete(context.Background(), rq2) // delete the same group
+	assert.Nil(suite.T(), err2)
+}
+
 func TestFakeStoreSuite(t *testing.T) {
 	suite.Run(t, new(FakeStoreTestSuite))
 }
