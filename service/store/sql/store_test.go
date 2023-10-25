@@ -70,11 +70,9 @@ func (suite *FakeStoreTestSuite) TestListUserWithUserName() {
 
 func (suite *FakeStoreTestSuite) TestUpdateUser() {
 	request := &v1.UpdateUserRequest{
-		User: &v1.User{
-			Username: "jack2",
-			Email:    "jack@example.com",
-		},
-		Role: v1.Role_superadmin,
+		Username: "jack2",
+		Email:    "jack@example.com",
+		Role:     v1.Role_superadmin,
 	}
 
 	err := suite.FakeFactory.Users().Update(context.Background(), request)

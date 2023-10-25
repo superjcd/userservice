@@ -62,11 +62,11 @@ func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserLi
 
 func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error {
 	user := &store.User{}
-	if err := u.db.Where("email = ?", rq.User.Email).First(user).Error; err != nil {
+	if err := u.db.Where("email = ?", rq.Email).First(user).Error; err != nil {
 		return err
 	}
 
-	user.Name = rq.User.Username
+	user.Name = rq.Username
 	isAdmin := 0
 
 	if rq.Role >= 1 {

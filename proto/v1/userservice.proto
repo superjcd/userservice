@@ -128,9 +128,10 @@ message ListUserResponse {
 }
 
 message UpdateUserRequest { 
-    User user = 1;
-    Role role = 2;
-    string creator =3;
+    string username=1;
+    string email=2;
+    Role role = 3;
+    string creator=4;
 }
 
 message UpdateUserResponse {

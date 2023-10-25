@@ -59,7 +59,7 @@
 				
 				<option value="file1">github.com/superjcd/userservice/service/store/sql/sql.go (75.0%)</option>
 				
-				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (70.0%)</option>
+				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (71.4%)</option>
 				
 				</select>
 			</div>
@@ -92,7 +92,9 @@ var _ store.GroupStore = (*groups)(nil)
 func (g *groups) Create(ctx context.Context, rq *v1.CreateGroupRequest) error <span class="cov0" title="0">{
 
         group := store.Group{
-                Name: rq.Groupname,
+                Name:    rq.Name,
+                Type:    rq.Type,
+                Creator: rq.Creator,
         }
 
         return g.db.Create(&amp;group).Error // 我只存储了用户， 但没有处理和用户group有关的逻辑
@@ -104,6 +106,12 @@ func (g *groups) List(ctx context.Context, rq *v1.ListGroupRequest) (*store.Grou
 
         if rq.Name != "" </span><span class="cov0" title="0">{
                 tx = tx.Where("name = ?", rq.Name)
+        }</span>
+        <span class="cov0" title="0">if rq.Type != "" </span><span class="cov0" title="0">{
+                tx = tx.Where("type = ?", rq.Type)
+        }</span>
+        <span class="cov0" title="0">if rq.Creator != "" </span><span class="cov0" title="0">{
+                tx = tx.Where("creator = ?", rq.Creator)
         }</span>
 
         <span class="cov0" title="0">d := tx.
@@ -123,9 +131,15 @@ func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error <s
                 return err
         }</span>
 
-        <span class="cov0" title="0">group.Name = rq.NewName
+        <span class="cov0" title="0">if rq.NewName != "" </span><span class="cov0" title="0">{
+                group.Name = rq.NewName
+        }</span>
 
-        return g.db.Save(&amp;group).Error</span>
+        <span class="cov0" title="0">if rq.Creator != "" </span><span class="cov0" title="0">{
+                group.Creator = rq.Creator
+        }</span>
+
+        <span class="cov0" title="0">return g.db.Save(&amp;group).Error</span>
 }
 
 func (g *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error <span class="cov0" title="0">{
@@ -202,14 +216,16 @@ var _ store.UserStore = (*users)(nil)
 func (u *users) Create(ctx context.Context, rq *v1.CreateUserRequest) error <span class="cov8" title="1">{
         isAdmin := 0
 
-        if rq.Role == v1.Role_admin </span><span class="cov8" title="1">{
+        if rq.Role &gt;= v1.Role_admin </span><span class="cov0" title="0">{
                 isAdmin = 1
         }</span>
 
         <span class="cov8" title="1">user := store.User{
-                Name:    rq.Username,
-                Email:   rq.Email,
-                IsAdmin: isAdmin,
+                Name:      rq.Username,
+                Email:     rq.Email,
+                IsAdmin:   isAdmin,
+                Creator:   rq.Creator,
+                RoleLevel: int(rq.Role),
         }
 
         return u.db.Create(&amp;user).Error</span> // 我只存储了用户， 但没有处理和用户group有关的逻辑
@@ -227,6 +243,10 @@ func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserLi
                 tx = tx.Where("email = ?", rq.Email)
         }</span>
 
+        <span class="cov8" title="1">if rq.Creator != "" </span><span class="cov8" title="1">{
+                tx = tx.Where("creator = ?", rq.Creator)
+        }</span>
+
         <span class="cov8" title="1">d := tx.
                 Offset(int(rq.Offset)).
                 Limit(int(rq.Limit)).
@@ -240,18 +260,24 @@ func (u *users) List(ctx context.Context, rq *v1.ListUserRequest) (*store.UserLi
 
 func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error <span class="cov8" title="1">{
         user := &amp;store.User{}
-        if err := u.db.Where("email = ?", rq.User.Email).First(user).Error; err != nil </span><span class="cov0" title="0">{
+        if err := u.db.Where("email = ?", rq.Email).First(user).Error; err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
 
-        <span class="cov8" title="1">user.Name = rq.User.Username
+        <span class="cov8" title="1">user.Name = rq.Username
         isAdmin := 0
-        if rq.Role == 0 </span><span class="cov0" title="0">{
+
+        if rq.Role &gt;= 1 </span><span class="cov8" title="1">{
                 isAdmin = 1
         }</span>
-        <span class="cov8" title="1">user.IsAdmin = isAdmin
 
-        return u.db.Save(user).Error</span>
+        <span class="cov8" title="1">user.RoleLevel = int(rq.Role)
+        user.IsAdmin = isAdmin
+        if rq.Creator != "" </span><span class="cov0" title="0">{
+                user.Creator = rq.Creator
+        }</span>
+
+        <span class="cov8" title="1">return u.db.Save(user).Error</span>
 }
 
 func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error <span class="cov0" title="0">{
