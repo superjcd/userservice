@@ -59,7 +59,7 @@
 				
 				<option value="file1">github.com/superjcd/userservice/service/store/sql/sql.go (83.3%)</option>
 				
-				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (71.4%)</option>
+				<option value="file2">github.com/superjcd/userservice/service/store/sql/users.go (85.4%)</option>
 				
 				</select>
 			</div>
@@ -143,7 +143,7 @@ func (g *groups) Update(ctx context.Context, rq *v1.UpdateGroupRequest) error <s
 }
 
 func (g *groups) Delete(ctx context.Context, rq *v1.DeleteGroupRequest) error <span class="cov8" title="1">{
-        return g.db.Where("name = ?", rq.Name).Delete(&amp;store.Group{}).Error
+        return g.db.Unscoped().Where("name = ? AND type = ?", rq.Name, rq.Type).Delete(&amp;store.Group{}).Error
 }</span>
 </pre>
 		
@@ -280,16 +280,26 @@ func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error <spa
         <span class="cov8" title="1">return u.db.Save(user).Error</span>
 }
 
-func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error <span class="cov0" title="0">{
+func (u *users) RestPassword(ctx context.Context, rq *v1.ResetUserPasswordRequest) error <span class="cov8" title="1">{
         var err error
         user := store.User{}
-        if err := u.db.Where("email = ?", rq.User.Email).First(&amp;user).Error; err != nil </span><span class="cov0" title="0">{
+        if err = u.db.Where("email = ?", rq.Email).First(&amp;user).Error; err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
-        <span class="cov0" title="0">if user.Password, err = passwd.Encrypt(rq.Password); err != nil </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">user.Password = "" // 将密码设置为空
+        return u.db.Save(&amp;user).Error</span>
+}
+
+func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error <span class="cov8" title="1">{
+        var err error
+        user := store.User{}
+        if err = u.db.Where("email = ?", rq.Email).First(&amp;user).Error; err != nil </span><span class="cov0" title="0">{
                 return err
         }</span>
-        <span class="cov0" title="0">return u.db.Save(&amp;user).Error</span>
+        <span class="cov8" title="1">if user.Password, err = passwd.Encrypt(rq.Password); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">return u.db.Save(&amp;user).Error</span>
 }
 
 func (u *users) Delete(ctx context.Context, rq *v1.RemoveUserRequest) error <span class="cov8" title="1">{

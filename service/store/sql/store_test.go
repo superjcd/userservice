@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	v1 "github.com/superjcd/userservice/genproto/v1"
+	"github.com/superjcd/userservice/pkg/passwd"
 	"github.com/superjcd/userservice/service/store"
 	"gorm.io/gorm"
 )
@@ -106,6 +107,51 @@ func (suite *FakeStoreTestSuite) TestZDeleteUser() {
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), 0, len(userList.Items))
 
+}
+
+func (suite *FakeStoreTestSuite) TestUpdateUserPasswordGroup() {
+	// 创建用户
+	rqCreate := &v1.CreateUserRequest{
+		Username: "lucy",
+		Email:    "lucy@example.com",
+		Role:     0,
+		Creator:  "chaodi.jiang@fdsintl.com",
+	}
+	err := suite.FakeFactory.Users().Create(context.Background(), rqCreate)
+	assert.Nil(suite.T(), err)
+
+	rqUpdatePass := &v1.UpdateUserPasswordRequest{
+		Email:    "lucy@example.com",
+		Password: "123456789",
+	}
+
+	err2 := suite.FakeFactory.Users().UpdatePassword(context.Background(), rqUpdatePass)
+	assert.Nil(suite.T(), err2)
+
+	rqGetUser := &v1.ListUserRequest{Email: "lucy@example.com", Limit: 1}
+	userList, _ := suite.FakeFactory.Users().List(context.Background(), rqGetUser)
+	assert.Equal(suite.T(), 1, len(userList.Items))
+
+	assert.Equal(suite.T(), nil, passwd.Compare(userList.Items[0].Password, "123456789"))
+}
+
+func (suite *FakeStoreTestSuite) TestXResetPassword() {
+	rqGetUser := &v1.ListUserRequest{Email: "lucy@example.com", Limit: 1}
+	userList, _ := suite.FakeFactory.Users().List(context.Background(), rqGetUser)
+	assert.Equal(suite.T(), 1, len(userList.Items))
+
+	rqResetPass := &v1.ResetUserPasswordRequest{
+		Email: "lucy@example.com",
+	}
+
+	err := suite.FakeFactory.Users().RestPassword(context.Background(), rqResetPass)
+	assert.Nil(suite.T(), err)
+
+	rqGetUser2 := &v1.ListUserRequest{Email: "lucy@example.com", Limit: 1}
+	userList2, _ := suite.FakeFactory.Users().List(context.Background(), rqGetUser2)
+	assert.Equal(suite.T(), 1, len(userList2.Items))
+
+	assert.Equal(suite.T(), "", userList2.Items[0].Password) // 重置后密码应该为空
 }
 
 func (suite *FakeStoreTestSuite) TestCreateGroup() {

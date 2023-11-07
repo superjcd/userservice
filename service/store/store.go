@@ -17,6 +17,7 @@ type UserStore interface {
 	List(ctx context.Context, _ *v1.ListUserRequest) (*UserList, error)
 	Update(ctx context.Context, _ *v1.UpdateUserRequest) error
 	UpdatePassword(ctx context.Context, _ *v1.UpdateUserPasswordRequest) error
+	RestPassword(ctx context.Context, _ *v1.ResetUserPasswordRequest) error
 	Delete(ctx context.Context, _ *v1.RemoveUserRequest) error
 }
 

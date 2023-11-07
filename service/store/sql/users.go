@@ -82,10 +82,20 @@ func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error {
 	return u.db.Save(user).Error
 }
 
+func (u *users) RestPassword(ctx context.Context, rq *v1.ResetUserPasswordRequest) error {
+	var err error
+	user := store.User{}
+	if err = u.db.Where("email = ?", rq.Email).First(&user).Error; err != nil {
+		return err
+	}
+	user.Password = "" // 将密码设置为空
+	return u.db.Save(&user).Error
+}
+
 func (u *users) UpdatePassword(ctx context.Context, rq *v1.UpdateUserPasswordRequest) error {
 	var err error
 	user := store.User{}
-	if err := u.db.Where("email = ?", rq.User.Email).First(&user).Error; err != nil {
+	if err = u.db.Where("email = ?", rq.Email).First(&user).Error; err != nil {
 		return err
 	}
 	if user.Password, err = passwd.Encrypt(rq.Password); err != nil {

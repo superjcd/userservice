@@ -140,7 +140,7 @@ message UpdateUserResponse {
 }
 
 message ResetUserPasswordRequest {
-    User user =1;
+    string email=1;
 }
 
 message ResetUserPasswordResponse {
@@ -149,7 +149,7 @@ message ResetUserPasswordResponse {
 }
 
 message UpdateUserPasswordRequest {
-    User user =1 ;
+    string email = 1;
     string password = 2;
 
 }
