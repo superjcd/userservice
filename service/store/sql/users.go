@@ -82,7 +82,7 @@ func (u *users) Update(ctx context.Context, rq *v1.UpdateUserRequest) error {
 	return u.db.Save(user).Error
 }
 
-func (u *users) RestPassword(ctx context.Context, rq *v1.ResetUserPasswordRequest) error {
+func (u *users) ResetPassword(ctx context.Context, rq *v1.ResetUserPasswordRequest) error {
 	var err error
 	user := store.User{}
 	if err = u.db.Where("email = ?", rq.Email).First(&user).Error; err != nil {

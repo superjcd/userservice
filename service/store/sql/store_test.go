@@ -144,7 +144,7 @@ func (suite *FakeStoreTestSuite) TestXResetPassword() {
 		Email: "lucy@example.com",
 	}
 
-	err := suite.FakeFactory.Users().RestPassword(context.Background(), rqResetPass)
+	err := suite.FakeFactory.Users().ResetPassword(context.Background(), rqResetPass)
 	assert.Nil(suite.T(), err)
 
 	rqGetUser2 := &v1.ListUserRequest{Email: "lucy@example.com", Limit: 1}
